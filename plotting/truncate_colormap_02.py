@@ -12,7 +12,7 @@ def truncate_colormap(color_map_name: str,
     Truncate a given colormap to a specified range.
     Please refer to:
     https://blog.csdn.net/weixin_46090057/article/details/119882021
-nutio
+
     Args
     ----
     color_map_name: string
