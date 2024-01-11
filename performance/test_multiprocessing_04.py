@@ -100,8 +100,7 @@ def run_multi_tasks(type_of_tasks: str,
     """
     start_time = time.time()
     number_of_processes = number_of_tasks if number_of_tasks else multiprocessing.cpu_count()
-    # TODO: `number_of_processes` can be delivered
-    # by a command-line argument.
+    # TODO: Please reconsider the ternary operator.
 
     with multiprocessing.Pool(processes=number_of_processes) as pool:
         results = pool.starmap(
