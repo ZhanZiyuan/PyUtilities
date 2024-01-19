@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+
 from pathlib import Path
 
 
@@ -84,7 +87,12 @@ if __name__ == "__main__":
 
     set_dir_01 = "C:/Users/user/Downloads"
 
-    insert_line_and_add_number(
-        set_dir_01,
-        extension=".log"
-    )
+    try:
+        insert_line_and_add_number(
+            set_dir_01,
+            extension=".log"
+        )
+    except FileNotFoundError:
+        print(
+            f'Please check the directory you input: "{set_dir_01}"'
+        )
