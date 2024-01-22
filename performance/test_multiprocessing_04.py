@@ -181,3 +181,6 @@ if __name__ == "__main__":
             command_args.task_number,
             command_args.sequence_length
         )
+
+    else:
+        parser.print_usage()
