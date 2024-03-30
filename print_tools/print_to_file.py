@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 """
+Copyright 2023 Neil Qiang Su Group. All Rights Reserved.
+Version : print_to_file_03.py
+Author  : Ziyuan Zhan
+Time    : 2023-10-20 20:33:55
+Update  : 2023-10-20 20:33:55
+
 References:
 1. [Method of outputting print content to a file](https://codeantenna.com/a/sVn1MvGp32)
 2. [How to redirect printed output to a TXT file](https://cloud.tencent.com/developer/ask/sof/133755)
