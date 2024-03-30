@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib import cm
+from matplotlib import colormaps
 from matplotlib.colors import LinearSegmentedColormap
 
 
@@ -32,7 +32,7 @@ def truncate_colormap(color_map_name: str,
     -------
     Returns the truncated colormap.
     """
-    selected_color_map = cm.get_cmap(color_map_name)
+    selected_color_map = colormaps[color_map_name]
 
     truncated_color_map = LinearSegmentedColormap.from_list(
         f"trunc({color_map_name}, {minval:.2f}, {maxval:.2f})",
@@ -55,7 +55,7 @@ if __name__ == "__main__":
     ax[0].imshow(
         two_dim_data_gradient,
         interpolation="nearest",
-        cmap=cm.get_cmap("plasma")
+        cmap=colormaps["plasma"]
     )
     ax[1].imshow(
         two_dim_data_gradient,
@@ -65,7 +65,7 @@ if __name__ == "__main__":
     ax[2].imshow(
         two_dim_data_gradient,
         interpolation="nearest",
-        cmap=cm.get_cmap("viridis")
+        cmap=colormaps["viridis"]
     )
     ax[3].imshow(
         two_dim_data_gradient,
