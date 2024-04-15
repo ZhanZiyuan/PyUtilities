@@ -5,6 +5,7 @@ TODO:
 
 1. threading & multiprocessing
 2. exe
+3. interactive
 """
 
 import argparse
@@ -171,33 +172,58 @@ class WebDownloader(object):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(
-        description="Download elements from the specified website."
+        prog="Web Downloader",
+        description="Download elements from the specified website.",
+        formatter_class=argparse.RawTextHelpFormatter
     )
 
     parser.add_argument(
+        "-w",
         "--website_url",
         type=str,
         default="https://takanenonadeshiko.jp/",
-        help="The URL to be requested."
+        help=(
+            "The URL to be requested.\n"
+            "The default is: %(default)s"
+        )
     )
     parser.add_argument(
+        "-f",
         "--folder_path",
         type=str,
-        default="C:/Users/user/Downloads",
-        help="The directory to store the downloaded elements."
+        default=Path(__file__).parent,
+        help=(
+            "The directory to store the downloaded elements.\n"
+            "The default is: %(default)s"
+        )
     )
     parser.add_argument(
+        "-e",
         "--element_tag",
         type=str,
         choices=["img", "audio", "video"],
         default="img",
-        help="The tag of elements to be downloaded."
+        help=(
+            "The tag of elements to be downloaded.\n"
+            "The default is: %(default)s"
+        )
     )
     parser.add_argument(
+        "-r",
         "--requests_per_minute",
         type=int,
         default=10,
-        help="The number of requests to the specified URL per minute."
+        help=(
+            "The number of requests to the specified URL per minute.\n"
+            "The default is: %(default)s"
+        )
+    )
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        version="%(prog)s 1.0.0",
+        help="Print the version number of %(prog)s and exit."
     )
 
     command_args = parser.parse_args()
