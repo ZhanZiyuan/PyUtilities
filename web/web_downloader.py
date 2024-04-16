@@ -32,7 +32,7 @@ class WebDownloader(object):
         The directory to store the downloaded elements.
     element_tag: string
         The tag of elements to be filtered.
-        Default is "img".
+        Default is "image".
     requests_per_minute: integer
         The number of requests to the specified URL per minute.
         Default is 10.
@@ -50,7 +50,7 @@ class WebDownloader(object):
     def __init__(self,
                  website_url: str,
                  folder_path: str,
-                 element_tag: str = "img",
+                 element_tag: str = "image",
                  requests_per_minute: int = 10) -> None:
         """
         Initialize the WebDownloader object.
@@ -134,21 +134,6 @@ class WebDownloader(object):
                 print(f"Downloaded: {updated_file_name}")
             self.last_request_time = time()
 
-    def _modify_tag_of_elements(self) -> str:
-        """
-        Modify the tag of elements to be filtered.
-        """
-        if self.element_tag == "img":
-            return "images"
-        elif self.element_tag == "audio":
-            return "audio"
-        elif self.element_tag == "video":
-            return "videos"
-        else:
-            raise ValueError(
-                f'Incorrect tag of elements: "{self.element_tag}"'
-            )
-
     def download_all_elements(self) -> None:
         """
         Download all elements from the specified website.
@@ -157,11 +142,14 @@ class WebDownloader(object):
 
         if response.status_code == 200:
             print(
-                f"Downloading {self._modify_tag_of_elements()} "
+                f"Downloading {self.element_tag}s "
                 f"from: {self.website_url}"
             )
             soup = BeautifulSoup(response.text, "html.parser")
-            element_tags = soup.find_all(self.element_tag, src=True)
+            element_tags = soup.find_all(
+                name="img" if self.element_tag == "image" else self.element_tag,
+                src=True
+            )
             for elem_tag in element_tags:
                 elem_url = elem_tag.get("src")
                 full_elem_url = urljoin(self.website_url, elem_url)
@@ -180,8 +168,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "-w",
         "--website_url",
-        type=str,
         default="https://takanenonadeshiko.jp/",
+        type=str,
         help=(
             "The URL to be requested.\n"
             "The default is: %(default)s"
@@ -190,8 +178,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "-f",
         "--folder_path",
-        type=str,
         default=Path(__file__).parent,
+        type=str,
         help=(
             "The directory to store the downloaded elements.\n"
             "The default is: %(default)s"
@@ -200,9 +188,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "-e",
         "--element_tag",
+        default="image",
         type=str,
-        choices=["img", "audio", "video"],
-        default="img",
+        choices=["image", "audio", "video"],
         help=(
             "The tag of elements to be downloaded.\n"
             "The default is: %(default)s"
@@ -211,8 +199,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "-r",
         "--requests_per_minute",
-        type=int,
         default=10,
+        type=int,
         help=(
             "The number of requests to the specified URL per minute.\n"
             "The default is: %(default)s"
@@ -222,8 +210,8 @@ if __name__ == "__main__":
         "-v",
         "--version",
         action="version",
-        version="%(prog)s 1.0.0",
-        help="Print the version number of %(prog)s and exit."
+        help="Print the version number of %(prog)s and exit.",
+        version="%(prog)s 1.0.2"
     )
 
     command_args = parser.parse_args()
