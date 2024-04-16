@@ -7,7 +7,6 @@ TODO:
 2. exe
 """
 
-import argparse
 from pathlib import Path
 from time import sleep, time
 from urllib.parse import urljoin
@@ -158,68 +157,31 @@ class WebDownloader(object):
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(
-        prog="Web Downloader",
-        description="Download elements from the specified website.",
-        formatter_class=argparse.RawTextHelpFormatter
+    website_url_input = input(
+        "Please input the URL to be requested.\n"
+        "For example: https://www.baidu.com/\n"
     )
-
-    parser.add_argument(
-        "-w",
-        "--website_url",
-        default="https://takanenonadeshiko.jp/",
-        type=str,
-        help=(
-            "The URL to be requested.\n"
-            "The default is: %(default)s"
+    folder_path_input = input(
+        "Please input the directory to store the downloaded elements.\n"
+        "For example: C:/Users/user/Downloads\n"
+    )
+    element_tag_input = input(
+        "Please input the tag of elements to be downloaded.\n"
+        "For example: image\n"
+    )
+    requests_per_minute_input = int(
+        input(
+            "Please input the number of requests "
+            "to the specified URL per minute.\n"
+            "For example: 10\n"
         )
     )
-    parser.add_argument(
-        "-f",
-        "--folder_path",
-        default=Path(__file__).parent,
-        type=str,
-        help=(
-            "The directory to store the downloaded elements.\n"
-            "The default is: %(default)s"
-        )
-    )
-    parser.add_argument(
-        "-e",
-        "--element_tag",
-        default="image",
-        type=str,
-        choices=["image", "audio", "video"],
-        help=(
-            "The tag of elements to be downloaded.\n"
-            "The default is: %(default)s"
-        )
-    )
-    parser.add_argument(
-        "-r",
-        "--requests_per_minute",
-        default=10,
-        type=int,
-        help=(
-            "The number of requests to the specified URL per minute.\n"
-            "The default is: %(default)s"
-        )
-    )
-    parser.add_argument(
-        "-v",
-        "--version",
-        action="version",
-        help="Print the version number of %(prog)s and exit.",
-        version="%(prog)s 1.0.2"
-    )
-
-    command_args = parser.parse_args()
 
     downloader = WebDownloader(
-        website_url=command_args.website_url,
-        folder_path=command_args.folder_path,
-        element_tag=command_args.element_tag,
-        requests_per_minute=command_args.requests_per_minute
+        website_url=website_url_input,
+        folder_path=folder_path_input,
+        element_tag=element_tag_input,
+        requests_per_minute=requests_per_minute_input
     )
 
     downloader.download_all_elements()
