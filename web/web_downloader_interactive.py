@@ -157,6 +157,11 @@ class WebDownloader(object):
 
 if __name__ == "__main__":
 
+    print(
+        "A script to download elements (e.g. images) "
+        "from the specified website. "
+    )
+
     website_url_input = input(
         "Please input the URL to be requested.\n"
         "For example: https://www.baidu.com/\n"
