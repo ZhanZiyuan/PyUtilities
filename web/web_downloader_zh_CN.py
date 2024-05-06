@@ -1,12 +1,9 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-"""
-TODO:
 
-1. threading & multiprocessing
-2. exe
-"""
-
+import os
+import platform
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from time import sleep, time
 from urllib.parse import urljoin
@@ -132,6 +129,18 @@ class WebDownloader(object):
                 print(f"Downloaded: {updated_file_name}")
             self.last_request_time = time()
 
+    def download_multi_threaded(self, urls: list) -> None:
+        """
+        Download multiple elements from the specified list of URLs.
+
+        Args
+        ----
+        urls: list
+            A list of URLs to download elements from.
+        """
+        with ThreadPoolExecutor() as executor:
+            executor.map(self.download_single_element, urls)
+
     def download_all_elements(self) -> None:
         """
         Download all elements from the specified website.
@@ -148,10 +157,14 @@ class WebDownloader(object):
                 name="img" if self.element_tag == "image" else self.element_tag,
                 src=True
             )
-            for elem_tag in element_tags:
-                elem_url = elem_tag.get("src")
-                full_elem_url = urljoin(self.website_url, elem_url)
-                self.download_single_element(full_elem_url)
+            elem_urls = [
+                urljoin(
+                    self.website_url,
+                    elem_tag.get("src")
+                )
+                for elem_tag in element_tags
+            ]
+            self.download_multi_threaded(elem_urls)
             print("All downloads completed.")
 
 
@@ -159,7 +172,7 @@ if __name__ == "__main__":
 
     print(
         "这是一个从指定的网址"
-        "下载所有指定类型的网页元素（例如图片）的脚本。"
+        "下载所有指定类型的网页元素（例如图片）的脚本。\n"
     )
 
     website_url_input = input(
@@ -189,3 +202,11 @@ if __name__ == "__main__":
     )
 
     downloader.download_all_elements()
+
+    if platform.system() == "Windows":
+        os.system("pause")
+    else:
+        os.system(
+            "/bin/bash -c 'read -s -n 1 -p \"请按任意键退出。\"'"
+        )
+        print()
