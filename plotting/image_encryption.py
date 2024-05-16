@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
+import os
+import platform
 from base64 import b64decode, b64encode
 from pathlib import Path
 from typing import Union
 
 import numpy as np
-from numpy.random import default_rng
 from PIL import Image
 
 
@@ -40,7 +41,7 @@ def shuffle_pixels(origin_image: str,
     """
     Shuffle the arrangement of pixels in a specified dimension.
     """
-    rng = default_rng(seed)
+    rng = np.random.default_rng(seed)
 
     pixel_array = np.array(
         Image.open(origin_image)
@@ -88,34 +89,94 @@ def recover_pixels(shuffled_image: str,
 
 if __name__ == "__main__":
 
-    path_of_original_image = "C:/Users/user/Downloads/original.jpg"
-    path_of_text = "C:/Users/user/Downloads/key.txt"
-    path_of_decoded_image = "C:/Users/user/Downloads/decoded.jpg"
-    path_of_arr = "C:/Users/user/Downloads/pixels.npy"
-    path_of_shuffled_image = "C:/Users/user/Downloads/shuffled.jpg"
-    path_of_recovered_image = "C:/Users/user/Downloads/recovered.jpg"
-
-    encode_base64(
-        path_of_original_image,
-        path_of_text
+    print(
+        "A script to encode/decode images "
+        "or shuffle/recover the pixels of images.\n"
     )
 
-    decode_base64(
-        path_of_text,
-        path_of_decoded_image
+    selection_of_mode = input(
+        'Please select one mode.\n'
+        'Options are "encode", "decode", "shuffle" and "recover".\n'
     )
 
-    shuffle_pixels(
-        path_of_original_image,
-        path_of_shuffled_image,
-        path_of_arr,
-        dimension=1,
-        seed=None
-    )
+    match selection_of_mode:
 
-    recover_pixels(
-        path_of_shuffled_image,
-        path_of_recovered_image,
-        path_of_arr,
-        dimension=1
-    )
+        case "encode":
+            path_of_original_image = input(
+                "Please input the path of the original image.\n"
+            )
+            path_of_output_text = input(
+                "Please input the path of the output text file.\n"
+            )
+            encode_base64(
+                path_of_original_image,
+                path_of_output_text
+            )
+
+        case "decode":
+            path_of_input_text = input(
+                "Please input the path of the input text file.\n"
+            )
+            path_of_decoded_image = input(
+                "Please input the path of the decoded image.\n"
+            )
+            decode_base64(
+                path_of_input_text,
+                path_of_decoded_image
+            )
+
+        case "shuffle":
+            path_of_original_image = input(
+                "Please input the path of the original image.\n"
+            )
+            path_of_shuffled_image = input(
+                "Please input the path of the shuffled image.\n"
+            )
+            path_of_output_array = input(
+                "Please input the path of the output array.\n"
+            )
+            dimension_to_shuffle = input(
+                "Please input the dimension to shuffle.\n"
+            )
+            random_number_seed = input(
+                'Please input the selected random number seed.\n'
+                'Type "no" for `None`.\n'
+            )
+            shuffle_pixels(
+                path_of_original_image,
+                path_of_shuffled_image,
+                path_of_output_array,
+                int(dimension_to_shuffle),
+                seed=None if random_number_seed == "no" else int(random_number_seed)
+            )
+
+        case "recover":
+            path_of_shuffled_image = input(
+                "Please input the path of the shuffled image.\n"
+            )
+            path_of_recovered_image = input(
+                "Please input the path of the recovered image.\n"
+            )
+            path_of_input_array = input(
+                "Please input the path of the input array.\n"
+            )
+            dimension_to_recover = input(
+                "Please input the dimension to recover.\n"
+            )
+            recover_pixels(
+                path_of_shuffled_image,
+                path_of_recovered_image,
+                path_of_input_array,
+                int(dimension_to_recover)
+            )
+
+        case _:
+            print("Invalid mode selection.\n")
+
+    if platform.system() == "Windows":
+        os.system("pause")
+    else:
+        os.system(
+            "/bin/bash -c 'read -s -n 1 -p \"Press any key to exit.\"'"
+        )
+        print()
