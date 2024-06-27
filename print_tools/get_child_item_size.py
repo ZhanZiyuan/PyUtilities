@@ -1,9 +1,27 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+"""
+https://blog.csdn.net/zhangyixin_618/article/details/89526717
+
+https://www.cnblogs.com/unclemac/p/12783387.html
+"""
 
 import argparse
+import re
 from pathlib import Path
 from typing import Union
+
+COLORS = {
+    "Black": "\033[30m",
+    "Red": "\033[31m",
+    "Green": "\033[32m",
+    "Yellow": "\033[33m",
+    "Blue": "\033[34m",
+    "Magenta": "\033[35m",
+    "Cyan": "\033[36m",
+    "White": "\033[37m",
+    "Default": "\033[39m"
+}
 
 
 def get_child_item_size(folder_path: str,
@@ -14,7 +32,7 @@ def get_child_item_size(folder_path: str,
     """
     if Path(folder_path).is_dir():
         name_and_size = {}
-        for child_item in Path(folder_path).iterdir():
+        for child_item in sorted(Path(folder_path).iterdir(), key=lambda x: re.sub('[^A-Za-z0-9]+', '', x.name)):
             file_name = Path(child_item).name
             file_size = Path(child_item).stat().st_size
             if human_readable:
@@ -47,8 +65,10 @@ def format_size(file_size: Union[int, float]) -> str:
     return f"{file_size:.2f} PB"
 
 
-if __name__ == "__main__":
-
+def main() -> None:
+    """
+    __doc__
+    """
     parser = argparse.ArgumentParser(
         prog=f"{Path(__file__).name}",
         description=(
@@ -86,6 +106,17 @@ if __name__ == "__main__":
         )
     )
     parser.add_argument(
+        "-c",
+        "--color",
+        default="Default",
+        type=str,
+        # choices=list(COLORS.keys()),
+        help=(
+            "Specify the color of the printed files or directories.\n"
+            "The default is: %(default)s"
+        )
+    )
+    parser.add_argument(
         "-v",
         "--version",
         action="version",
@@ -111,4 +142,11 @@ if __name__ == "__main__":
         print("Length  Name".rjust(16))
         print("------  ----".rjust(16))
         for name, size in size_of_child_item.items():
-            print(f"{size:>10}  {name}")
+            color = COLORS[command_args.color.capitalize()]
+            print(f"{color}{size:>10}  {name}{COLORS['Default']}")
+        print("\n")
+
+
+if __name__ == "__main__":
+
+    main()

@@ -11,12 +11,19 @@ def convert_to_raw_string(original_string: str) -> str:
     return rf"{original_string}"
 
 
-def backslash_to_slash(original_path: str) -> str:
+def backslash_to_slash_path(original_path: str) -> str:
     """
     Replace backslashes in the input path
     on a Windows system with slashes.
     """
     return Path(rf"{original_path}").as_posix()
+
+
+def backslash_to_slash_str(path: str) -> str:
+    """
+    convert backslashes to slashes
+    """
+    return path.replace("\\", "/")
 
 
 if __name__ == "__main__":
@@ -43,13 +50,13 @@ if __name__ == "__main__":
     )
 
     print(
-        backslash_to_slash(windows_path_c_01),
+        backslash_to_slash_path(windows_path_c_01),
         "\n",
-        type(backslash_to_slash(windows_path_c_01))
+        type(backslash_to_slash_path(windows_path_c_01))
     )
 
     print(
-        backslash_to_slash(windows_path_d_01),
+        backslash_to_slash_path(windows_path_d_01),
         "\n",
-        type(backslash_to_slash(windows_path_d_01))
+        type(backslash_to_slash_path(windows_path_d_01))
     )

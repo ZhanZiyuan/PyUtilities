@@ -122,8 +122,10 @@ def run_multi_tasks(type_of_tasks: str,
     print(f"Elapsed time: {elapsed_time} seconds")
 
 
-if __name__ == "__main__":
-
+def main() -> None:
+    """
+    The main function.
+    """
     parser = argparse.ArgumentParser(
         description="Run multiple computation tasks."
     )
@@ -184,3 +186,8 @@ if __name__ == "__main__":
 
     else:
         parser.print_usage()
+
+
+if __name__ == "__main__":
+
+    main()
