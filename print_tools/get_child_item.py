@@ -17,35 +17,12 @@ from pathlib import Path
 from typing import Union
 
 
-def get_child_item_size(folder_path: str,
-                        human_readable: bool = True) -> Union[dict, None]:
+def get_child_item(folder_path: str,
+                   human_readable: bool = True) -> Union[dict, None]:
     """
     Get the size of each child item in the input directory
     in a human-readable format.
     """
-
-    def set_order_of_items(item: Path) -> tuple:
-        """
-        Set the order of sorting.
-
-        Parameters
-        ----------
-        item: Path
-            The path to the file or directory.
-
-        Returns
-        -------
-        tuple:
-            A tuple containing the file status (file or directory),
-            lower case file name,
-            and the file name with alphanumeric characters removed.
-        """
-        return (
-            item.is_file(),
-            item.name.lower(),
-            re.sub("[A-Za-z0-9]+", "", item.name)
-        )
-
     if Path(folder_path).is_dir():
         name_and_size = {}
         for child_item in sorted(Path(folder_path).iterdir(), key=set_order_of_items):
@@ -67,6 +44,29 @@ def get_child_item_size(folder_path: str,
         )
 
     return None
+
+
+def set_order_of_items(item: Path) -> tuple:
+    """
+    Set the order of sorting.
+
+    Parameters
+    ----------
+    item: Path
+        The path to the file or directory.
+
+    Returns
+    -------
+    tuple:
+        A tuple containing the file status (file or directory),
+        lower case file name,
+        and the file name with alphanumeric characters removed.
+    """
+    return (
+        item.is_file(),
+        item.name.lower(),
+        re.sub("[A-Za-z0-9]+", "", item.name)
+    )
 
 
 def format_size(file_size: Union[int, float]) -> str:
@@ -166,7 +166,7 @@ def main() -> None:
     command_args = parser.parse_args()
 
     path_passed = command_args.path if command_args.path is not None else command_args.folder_path
-    child_item_and_size = get_child_item_size(
+    child_item_and_size = get_child_item(
         folder_path=path_passed,
         human_readable=True if command_args.human_readable == "yes" else False
     )
