@@ -16,18 +16,6 @@ import re
 from pathlib import Path
 from typing import Union
 
-COLORS = {
-    "Black": "\033[30m",
-    "Red": "\033[31m",
-    "Green": "\033[32m",
-    "Yellow": "\033[33m",
-    "Blue": "\033[34m",
-    "Magenta": "\033[35m",
-    "Cyan": "\033[36m",
-    "White": "\033[37m",
-    "Default": "\033[39m"
-}
-
 
 def get_child_item_size(folder_path: str,
                         human_readable: bool = True) -> Union[dict, None]:
@@ -99,6 +87,18 @@ def main() -> None:
     """
     The main function.
     """
+    colors = {
+        "Black": "\033[30m",
+        "Red": "\033[31m",
+        "Green": "\033[32m",
+        "Yellow": "\033[33m",
+        "Blue": "\033[34m",
+        "Magenta": "\033[35m",
+        "Cyan": "\033[36m",
+        "White": "\033[37m",
+        "Default": "\033[39m"
+    }
+
     parser = argparse.ArgumentParser(
         prog=f"{Path(__file__).name}",
         description=(
@@ -174,7 +174,7 @@ def main() -> None:
     print("")
     print(
         "Directory: "
-        f"{COLORS['Green']}{Path(path_passed).absolute()}{COLORS['Default']}"
+        f"{colors['Green']}{Path(path_passed).absolute()}{colors['Default']}"
     )
     print("")
 
@@ -184,11 +184,11 @@ def main() -> None:
         for name, size in child_item_and_size.items():
             if Path(path_passed).joinpath(name).is_dir():
                 print(
-                    f"{size:>10} {COLORS[command_args.color_dir.capitalize()]}{name}{COLORS['Default']}"
+                    f"{size:>10} {colors[command_args.color_dir.capitalize()]}{name}{colors['Default']}"
                 )
             elif Path(path_passed).joinpath(name).is_file():
                 print(
-                    f"{size:>10} {COLORS[command_args.color_file.capitalize()]}{name}{COLORS['Default']}"
+                    f"{size:>10} {colors[command_args.color_file.capitalize()]}{name}{colors['Default']}"
                 )
 
 
