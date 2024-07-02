@@ -138,20 +138,33 @@ def main() -> None:
     parser.add_argument(
         "-cd",
         "--color_dir",
-        default="Blue",
+        default="blue",
         type=str,
+        choices=[k.lower() for k in colors],
         help=(
-            "Specify the color of the printed directories.\n"
+            "Specify the color of the printed subdirectories.\n"
             "The default is: %(default)s"
         )
     )
     parser.add_argument(
         "-cf",
         "--color_file",
-        default="Default",
+        default="default",
         type=str,
+        choices=[k.lower() for k in colors],
         help=(
             "Specify the color of the printed files.\n"
+            "The default is: %(default)s"
+        )
+    )
+    parser.add_argument(
+        "-cp",
+        "--color_path",
+        default="green",
+        type=str,
+        choices=[k.lower() for k in colors],
+        help=(
+            "Specify the color of the absolute version of this path.\n"
             "The default is: %(default)s"
         )
     )
@@ -160,7 +173,7 @@ def main() -> None:
         "--version",
         action="version",
         help="Print the version number of %(prog)s and exit.",
-        version="%(prog)s 2.0.1"
+        version="%(prog)s 2.0.2"
     )
 
     command_args = parser.parse_args()
@@ -174,7 +187,7 @@ def main() -> None:
     print("")
     print(
         "Directory: "
-        f"{colors['Green']}{Path(path_passed).absolute()}{colors['Default']}"
+        f"{colors[command_args.color_path.capitalize()]}{Path(path_passed).absolute()}{colors['Default']}"
     )
     print("")
 
