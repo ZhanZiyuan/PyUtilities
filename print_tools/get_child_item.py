@@ -116,7 +116,7 @@ def main() -> None:
     )
     parser.add_argument(
         "-p",
-        "--folder_path",
+        "--folder-path",
         default=Path(__file__).parent,
         type=str,
         help=(
@@ -126,7 +126,7 @@ def main() -> None:
     )
     parser.add_argument(
         "-r",
-        "--human_readable",
+        "--human-readable",
         default="yes",
         type=str,
         choices=["yes", "no"],
@@ -137,7 +137,7 @@ def main() -> None:
     )
     parser.add_argument(
         "-cd",
-        "--color_dir",
+        "--color-dir",
         default="blue",
         type=str,
         choices=[k.lower() for k in colors],
@@ -148,7 +148,7 @@ def main() -> None:
     )
     parser.add_argument(
         "-cf",
-        "--color_file",
+        "--color-file",
         default="default",
         type=str,
         choices=[k.lower() for k in colors],
@@ -159,7 +159,7 @@ def main() -> None:
     )
     parser.add_argument(
         "-cp",
-        "--color_path",
+        "--color-path",
         default="green",
         type=str,
         choices=[k.lower() for k in colors],
