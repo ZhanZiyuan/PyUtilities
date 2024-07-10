@@ -3,16 +3,18 @@
 """
 print_fence - print ASCII character fences
 
-version 4.0
-
-Modified manually on 2024-01-20 16:21
-
 References:
 1. [ASCII Art](https://blog.csdn.net/u014636245/article/details/83661559)
 2. [art · PyPI](https://pypi.org/project/art/)
 3. [pprint — Data pretty printer](https://docs.python.org/3/library/pprint.html)
+
+TODO:
+1. Print colored fences.
+2. Process multiple rows of strings.
 """
 
+import argparse
+from pathlib import Path
 from time import sleep
 from typing import Any, Union
 
@@ -30,29 +32,38 @@ def print_fence(contents: Any,
     ----
     contents: Any
         The contents you want to print.
-    set_width: integer
+    set_width: int
         The augment to the width of the fence.
-        Default is 4.
-    set_height: integer
+        Default is `4`.
+    set_height: int
         The augment to the height of the fence.
-        Default is 5.
-    fence_style: string
+        Default is `5`.
+    fence_style: str
         The style of the printed fence.
-        Default is "hyphen".
+        Default is `"hyphen"`.
     add_blank_line: bool
         If `True`, a blank line will be inserted
-        at the end of the print contents.
+        at the end of the printed contents.
         Default is `True`.
-    sleep_time: integer, float, or `None`
-        The set printing interval.
+    sleep_time: int, float, or `None`
+        The interval of each printing.
         Default is `None`.
 
     Returns
     -------
     Returns `None`: print the input contents.
-
-    NOTE: This function can only process one line of string by now.
     """
+    colors = {
+        "Black": "\033[30m",
+        "Red": "\033[31m",
+        "Green": "\033[32m",
+        "Yellow": "\033[33m",
+        "Blue": "\033[34m",
+        "Magenta": "\033[35m",
+        "Cyan": "\033[36m",
+        "White": "\033[37m",
+        "Default": "\033[39m"
+    }
 
     def pause(interval: Union[int, float, None]) -> None:
         """
@@ -112,31 +123,116 @@ def print_fence(contents: Any,
         pass
 
 
+def main() -> None:
+    """
+    The main function.
+    """
+    parser = argparse.ArgumentParser(
+        prog=f"{Path(__file__).name}",
+        description=(
+            "Use ASCII characters to fence what you would like to print."
+        ),
+        formatter_class=argparse.RawTextHelpFormatter
+    )
+
+    parser.add_argument(
+        "contents",
+        nargs="?",
+        type=str,
+        help="The printed contents."
+    )
+    parser.add_argument(
+        "-p",
+        "--printed-contents",
+        type=str,
+        help="The contents to be printed."
+    )
+    parser.add_argument(
+        "-s",
+        "--fence-style",
+        default="hyphen",
+        type=str,
+        choices=["hyphen", "asterisk"],
+        help=(
+            "The style of the fence.\n"
+            "The default is: %(default)s"
+        )
+    )
+    parser.add_argument(
+        "-b",
+        "--blank-line",
+        default="yes",
+        type=str,
+        choices=["yes", "no"],
+        help=(
+            "Whether to insert a blank line "
+            "at the end of the printed contents or not.\n"
+            "The default is: %(default)s"
+        )
+    )
+    parser.add_argument(
+        "-t",
+        "--sleep-time",
+        default="no",
+        type=str,
+        help=(
+            "The interval of each printing.\n"
+            "The default is: %(default)s"
+        )
+    )
+    parser.add_argument(
+        "-sw",
+        "--set-width",
+        default=4,
+        type=int,
+        help=(
+            "The width of the fence.\n"
+            "The default is: %(default)s"
+        )
+    )
+    parser.add_argument(
+        "-sh",
+        "--set-height",
+        default=5,
+        type=int,
+        help=(
+            "The height of the fence.\n"
+            "The default is: %(default)s"
+        )
+    )
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        help="Print the version number of %(prog)s and exit.",
+        version="%(prog)s 5.0.0"
+    )
+
+    command_args = parser.parse_args()
+
+    if command_args.contents is not None:
+        print_fence(
+            contents=command_args.contents,
+            set_width=command_args.set_width,
+            set_height=command_args.set_height,
+            fence_style=command_args.fence_style,
+            add_blank_line=True if command_args.blank_line == "yes" else False,
+            sleep_time=None if command_args.sleep_time == "no" else float(command_args.sleep_time)
+        )
+    elif command_args.contents is None:
+        if command_args.printed_contents is not None:
+            print_fence(
+                contents=command_args.printed_contents,
+                set_width=command_args.set_width,
+                set_height=command_args.set_height,
+                fence_style=command_args.fence_style,
+                add_blank_line=True if command_args.blank_line == "yes" else False,
+                sleep_time=None if command_args.sleep_time == "no" else float(command_args.sleep_time)
+            )
+        elif command_args.printed_contents is None:
+            parser.print_usage()
+
+
 if __name__ == "__main__":
 
-    print_fence(
-        "Python is awesome.",
-        add_blank_line=False
-    )
-
-    print_fence(
-        "Python is awesome.",
-        add_blank_line=True,
-        sleep_time=1.0
-    )
-
-    import numpy as np
-    import sympy as sm
-
-    print_fence(
-        np.array([10, 20, 30, 40]),
-        fence_style="asterisk"
-    )
-
-    x1, x2, x3 = sm.symbols("x1 x2 x3")
-    symbolic_func = x1**2 + x2**2 + x3**2
-
-    print_fence(
-        symbolic_func,
-        fence_style="asterisk"
-    )
+    main()
