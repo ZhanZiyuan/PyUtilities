@@ -26,6 +26,19 @@ def backslash_to_slash_str(path: str) -> str:
     return path.replace("\\", "/")
 
 
+def split_long_str(long_str: str,
+                   length_of_fragment: int) -> str:
+    """
+    Split a long string into fragments.
+    """
+    return "\n".join(
+        [
+            long_str[index: index+length_of_fragment]
+            for index in range(0, len(long_str), length_of_fragment)
+        ]
+    )
+
+
 if __name__ == "__main__":
 
     windows_path_c_01 = (
