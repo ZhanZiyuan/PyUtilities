@@ -197,11 +197,11 @@ def main() -> None:
         for name, size in child_item_and_size.items():
             if Path(path_passed).joinpath(name).is_dir():
                 print(
-                    f"{size:>10} {colors[command_args.color_dir.capitalize()]}{name}{colors['Default']}"
+                    f"{size:>10}  {colors[command_args.color_dir.capitalize()]}{name}{colors['Default']}"
                 )
             elif Path(path_passed).joinpath(name).is_file():
                 print(
-                    f"{size:>10} {colors[command_args.color_file.capitalize()]}{name}{colors['Default']}"
+                    f"{size:>10}  {colors[command_args.color_file.capitalize()]}{name}{colors['Default']}"
                 )
 
 
