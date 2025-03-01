@@ -127,38 +127,46 @@ def main() -> None:
     The main function.
     """
     parser = argparse.ArgumentParser(
-        description="Run multiple computation tasks."
+        prog="test_multiprocessing",
+        description="Run multiple computation tasks.",
+        formatter_class=argparse.RawTextHelpFormatter
     )
 
     parser.add_argument(
-        "--task_type",
+        "--task-type",
         choices=["matrix", "prime", "fibonacci"],
         help="The type of the task / tasks to perform."
     )
     parser.add_argument(
-        "--matrix_size",
+        "--matrix-size",
         type=int,
         default=10,
         help="The size of the matrix (NumPy array) to be created."
     )
     parser.add_argument(
-        "--prime_range",
+        "--prime-range",
         type=int,
         default=100,
         help="The upper limit of the range of the prime numbers."
     )
     parser.add_argument(
-        "--sequence_length",
+        "--sequence-length",
         type=int,
         default=10,
         help="The length of the Fibonacci sequence."
     )
-
     parser.add_argument(
-        "--task_number",
+        "--task-number",
         type=int,
         default=1,
         help="The number of the task / tasks to perform."
+    )
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        help="Print the version number of %(prog)s and exit.",
+        version="%(prog)s 0.2.1"
     )
 
     command_args = parser.parse_args()
